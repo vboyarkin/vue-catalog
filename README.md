@@ -1,5 +1,8 @@
 # vue-catalog
 
+![Task](img/1.jpg)
+![Example](img/2.png)
+
 ## Project setup
 ```
 npm install

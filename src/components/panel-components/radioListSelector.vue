@@ -5,7 +5,6 @@
       {{ item[propertyName] }}
       <input
         type="radio"
-        name="aaaa"
         :value="item[propertyName]"
         :key="item.id"
         :id="item.id"

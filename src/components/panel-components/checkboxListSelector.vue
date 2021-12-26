@@ -1,7 +1,8 @@
 <template>
   <div class="checkbox-contaier">
     <h4>{{ title }}</h4>
-    <div class="list-wrap" v-for="item of items" :key="item.id">
+    <TextField v-if="addTextField" @value-change="onTextFieldValueChange" />
+    <div class="list-wrap" v-for="item of filteredItems" :key="item.id">
       <input
         type="checkbox"
         :id="'checkbox' + item.id"
@@ -13,7 +14,12 @@
 </template>
 
 <script>
+import TextField from "./TextField.vue";
+
 export default {
+  components: {
+    TextField,
+  },
   props: {
     items: {
       type: Array,
@@ -27,20 +33,36 @@ export default {
       type: String,
       required: true,
     },
+    addTextField: {
+      required: false,
+      default: false,
+    },
   },
   data() {
     return {
       checkedItems: this.items,
+      textFilter: "",
     };
   },
-  computed: {},
+  computed: {
+    filteredItems() {
+      return this.items.filter((x) =>
+        x.option.toLowerCase().includes(this.textFilter.toLowerCase().trim())
+      );
+    },
+  },
   watch: {
     checkedItems: {
       deep: true,
-      immediate:true,
+      immediate: true,
       handler: function (items) {
         this.$emit("selection-change", items);
       },
+    },
+  },
+  methods: {
+    onTextFieldValueChange(value) {
+      this.textFilter = value;
     },
   },
 };

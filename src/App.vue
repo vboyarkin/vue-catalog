@@ -84,7 +84,6 @@ export default {
             x.price >= this.query.selectedPriceRange.min
         );
 
-      console.log(this.query.selectedDiscount);
       if (
         this.query.selectedDiscount !== undefined &&
         Object.keys(this.query.selectedDiscount)

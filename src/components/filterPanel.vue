@@ -5,6 +5,7 @@
       title="Категория"
       :items="categoryOptions"
       @selection-change="onCategorySelectionChange"
+      addTextField="true"
     />
     <RangeSelector
       propertyName="price"

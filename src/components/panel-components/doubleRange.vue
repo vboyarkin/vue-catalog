@@ -66,8 +66,17 @@ export default {
     },
   },
   watch: {
+    minValue(val) {
+      this.leftValue = val;
+    },
+    maxValue(val) {
+      this.rightValue = val;
+    },
     leftValue() {
       this.leftValue = filterDigits(this.leftValue);
+      this.leftValue = Number(this.leftValue);
+      this.rightValue = Number(this.rightValue);
+      
       if (this.leftValue > this.rightValue) {
         const t = this.leftValue;
         this.leftValue = this.rightValue;
@@ -78,7 +87,10 @@ export default {
     },
     rightValue() {
       this.rightValue = filterDigits(this.rightValue);
-      if (this.rightValue > this.leftValue) {
+      this.leftValue = Number(this.leftValue);
+      this.rightValue = Number(this.rightValue);
+
+      if (this.rightValue < this.leftValue) {
         const t = this.rightValue;
         this.rightValue = this.leftValue;
         this.leftValue = t;
@@ -92,14 +104,11 @@ export default {
 
 <style lang="sass" scoped>
 $thumb-diameter: 1em
-$color-bg: white
+$color-thumb-bg: white
 $color-active: #e83e5a
 $color-inactive: #e7e7e9
 $input-color: #000
 $input-text-width: 6em
-
-body
-  font-size: 16px
 
 @mixin track()
   background: none
@@ -109,7 +118,7 @@ body
   border-radius: 50%
   width: $thumb-diameter
   height: $thumb-diameter
-  background: $color-bg
+  background: $color-thumb-bg
   pointer-events: auto
   cursor: pointer
 

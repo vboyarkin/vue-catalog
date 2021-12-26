@@ -3,16 +3,16 @@
     <h4>{{ title }}</h4>
     <doubleRange
       @range-change="onRangeChange"
-      :minValue="minPrice"
-      :maxValue="maxPrice"
+      :minValue="limits.minVal"
+      :maxValue="limits.maxVal"
     />
   </div>
 </template>
 
 <script>
-import doubleRange from "./doubleRange.vue";
+import DoubleRange from "./DoubleRange.vue";
 export default {
-  components: { doubleRange },
+  components: { DoubleRange },
   props: {
     items: {
       type: Array,
@@ -27,21 +27,27 @@ export default {
       required: true,
     },
   },
-  data() {
-    const prices = this.items.map((item) => item.price);
-    const minPrice = Math.min(...prices);
-    const maxPrice = Math.max(...prices);
+  computed: {
+    limits() {
+      const prices = this.items.map((item) => item.price);
+      const minVal = Math.min(...prices);
+      const maxVal = Math.max(...prices);
 
-    return {
-      minPrice,
-      maxPrice,
-    };
+      return {
+        minVal,
+        maxVal,
+      };
+    },
   },
   methods: {
     onRangeChange(...args) {
-      this.$emit("range-change", ...args)
+      this.$emit("range-change", ...args);
     },
   },
+  // raise an event to tell FilterPanel initial min and max values
+  mounted(){
+    this.onRangeChange(this.limits.minVal, this.limits.maxVal);
+  }
 };
 </script>
 

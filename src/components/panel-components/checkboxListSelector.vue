@@ -1,10 +1,14 @@
 <template>
   <div class="checkbox-contaier">
     <h4>{{ title }}</h4>
-    <label v-for="item of items" :key="item.id">
-      {{ item[propertyName] }}
-      <input type="checkbox" v-model="checkedItems[item.id]" />
-    </label>
+    <div class="list-wrap" v-for="item of items" :key="item.id">
+      <input
+        type="checkbox"
+        :id="'checkbox' + item.id"
+        v-model="checkedItems[item.id].checked"
+      />
+      <label :for="'checkbox' + item.id">{{ item.option }}</label>
+    </div>
   </div>
 </template>
 
@@ -26,21 +30,23 @@ export default {
   },
   data() {
     return {
-      checkedItems: {},
+      checkedItems: this.items,
     };
   },
+  computed: {},
   watch: {
     checkedItems: {
       deep: true,
-      handler: function (checkedItems) {
-        this.$emit("selection-change", checkedItems);
+      immediate:true,
+      handler: function (items) {
+        this.$emit("selection-change", items);
       },
     },
   },
 };
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
 .checkbox-contaier
   display: flex
   flex-direction: column

@@ -1,16 +1,15 @@
 <template>
   <div class="radio-contaier">
     <h4>{{ title }}</h4>
-    <label v-for="item of items" :key="item.id">
-      {{ item[propertyName] }}
+    <div class="list-wrap" v-for="item of items" :key="item.id">
       <input
         type="radio"
-        :value="item[propertyName]"
-        :key="item.id"
-        :id="item.id"
-        v-model="checkedItems"
+        :value="item.option"
+        :id="'radio' + item.id"
+        v-model="selectedItem"
       />
-    </label>
+      <label :for="'radio' + item.id">{{ item.option }}</label>
+    </div>
   </div>
 </template>
 
@@ -32,13 +31,17 @@ export default {
   },
   data() {
     return {
-      checkedItems: {},
+      selectedItem: {},
     };
   },
+  computed: {},
   watch: {
-    checkedItems(checkedItems) {
-      this.$emit("selection-change", checkedItems);
+    selectedItem(selectedItem) {
+      this.$emit("selection-change", selectedItem);
     },
+  },
+  mounted() {
+    // this.$emit("selection-change", this.selectedItem);
   },
 };
 </script>

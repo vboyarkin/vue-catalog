@@ -1,10 +1,10 @@
 <template>
   <div class="filter-panel">
     <CheckboxListSelector
-      propertyName="brand"
-      title="Бренд"
-      :items="this.items"
-      @selection-change="onBrandSelectionChange"
+      propertyName="category"
+      title="Категория"
+      :items="categoryOptions"
+      @selection-change="onCategorySelectionChange"
     />
     <RangeSelector
       propertyName="price"
@@ -15,51 +15,86 @@
     <RadioListSelector
       propertyName="discount"
       title="Размер скидки"
-      :items="this.items"
+      :items="discountOptions"
       @selection-change="onDiscountSelectionChange"
     />
   </div>
 </template>
 
 <script>
-import CheckboxListSelector from "@/components/panel-components/checkboxListSelector.vue";
-import RadioListSelector from "@/components/panel-components/radioListSelector.vue";
-import RangeSelector from "@/components/panel-components/rangeSelector.vue";
+import CheckboxListSelector from "./panel-components/CheckboxListSelector.vue";
+import RadioListSelector from "./panel-components/RadioListSelector.vue";
+import RangeSelector from "./panel-components/RangeSelector.vue";
 export default {
+  components: {
+    CheckboxListSelector,
+    RadioListSelector,
+    RangeSelector,
+  },
   props: {
     items: {
       type: Array,
       required: true,
     },
   },
-  components: {
-    CheckboxListSelector,
-    RadioListSelector,
-    RangeSelector,
-  },
   // как лучше называть обработчики событий?
   methods: {
-    onBrandSelectionChange(checkedItems) {
-      console.log(checkedItems);
-      // TODO
+    onCategorySelectionChange(checkedItems) {
+      this.$emit("category-change", checkedItems);
     },
     onDiscountSelectionChange(selectedItem) {
-      console.log(selectedItem);
-      // TODO
+      if (selectedItem == "Не важно")
+        selectedItem = undefined;
+      this.$emit("discount-change", selectedItem);
     },
     onRangeSelectionChange(lval, rval) {
-      console.log(lval, rval);
-      // TODO
+      this.$emit("price-range-change", lval, rval);
+    },
+    filterUniqueOptions(arr, propertyName, shouldSort, reverseSort) {
+      const options = arr.map((x) => x[propertyName]);
+      let uniqueOptions = Array.from(new Set(options));
+
+      if (shouldSort) uniqueOptions = uniqueOptions.sort();
+      if (shouldSort && reverseSort) uniqueOptions = uniqueOptions.reverse();
+
+      return uniqueOptions.map((option, i) => {
+        return {
+          id: i,
+          option,
+        };
+      });
+    },
+  },
+  computed: {
+    categoryOptions() {
+      return this.filterUniqueOptions(this.items, "category").map((x) => {
+        x.checked = false;
+        return x;
+      });
+    },
+    // "Не важно" должно появляться не тут (может быть другой язык)
+    // Как лучше сделать?..
+    discountOptions() {
+      const options = this.filterUniqueOptions(
+        this.items,
+        "discount",
+        true,
+        true
+      );
+      options.push({ option: "Не важно" });
+      options[options.length - 1].id = options.length - 1;
+      return options;
     },
   },
 };
 </script>
 
 <style lang="sass">
-.filter-panel
-  width: 60%
+.filter-panel h4
+  text-align: left
+  margin-left: 1rem
 
-  h4
-    text-align: left
-    margin-left: 1rem
+.list-wrap
+  text-align: left
+  margin-left: 1.1rem
 </style>

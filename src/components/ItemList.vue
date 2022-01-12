@@ -24,6 +24,7 @@ export default {
   flex-wrap: wrap
 
 .product-card
-  margin: 40px
+  margin: 20px 44px
   width: 200px
+  height: 330px
 </style>

@@ -38,9 +38,20 @@ export default {
 $color-active: #e31235
 $color-inactive: #8e8e93
 
+.item-card
+  display: flex
+  flex-direction: column
+
+  > *
+    flex: 1 
+
+  .image-container
+    flex: 9999
+
 .image-container
   display: flex
   align-items: center
+  
 
 .image
   max-height: 100px
@@ -75,15 +86,15 @@ svg
   margin: 5px 0px 10px 0px
 
 .title
-  margin: 3px 0px 10px 0px
+  margin: 3px 0px 18px 0px
 
 button
   color: white
   background: $color-active
   border: none
   border-radius: 3px
-  padding: 8px 20px
-  margin: 5px 0px
+  padding: 8px 0px 
+  margin: 0px
   font-family: inherit
   cursor: pointer
   &:hover

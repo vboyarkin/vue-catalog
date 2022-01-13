@@ -89,7 +89,9 @@ export default {
         Object.keys(this.query.selectedDiscount)
       )
         result = result.filter(
-          (x) => x.discount == this.query.selectedDiscount
+          (x) =>
+            x.discount == this.query.selectedDiscount ||
+            this.query.selectedDiscount !== undefined
         );
 
       return result;

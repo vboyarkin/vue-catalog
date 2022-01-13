@@ -26,14 +26,6 @@
 </template>
 
 <script>
-/**
- * Returns string exluding all chars that aren't digits, commas, dots
- */
-function filterDigits(x) {
-  if (typeof x === "number") return x;
-  return x.replace(/[^0-9.,]/g, "");
-}
-
 export default {
   props: {
     minValue: {
@@ -73,10 +65,10 @@ export default {
       this.rightValue = val;
     },
     leftValue() {
-      this.leftValue = filterDigits(this.leftValue);
+      this.leftValue = this.filterDigits(this.leftValue);
       this.leftValue = Number(this.leftValue);
       this.rightValue = Number(this.rightValue);
-      
+
       if (this.leftValue > this.rightValue) {
         const t = this.leftValue;
         this.leftValue = this.rightValue;
@@ -86,7 +78,7 @@ export default {
       this.$emit("range-change", this.leftValue, this.rightValue);
     },
     rightValue() {
-      this.rightValue = filterDigits(this.rightValue);
+      this.rightValue = this.filterDigits(this.rightValue);
       this.leftValue = Number(this.leftValue);
       this.rightValue = Number(this.rightValue);
 
@@ -95,8 +87,17 @@ export default {
         this.rightValue = this.leftValue;
         this.leftValue = t;
       }
-      
+
       this.$emit("range-change", this.leftValue, this.rightValue);
+    },
+  },
+  methods: {
+    /**
+     * Returns string exluding all chars that aren't digits, commas, dots
+     */
+    filterDigits(x) {
+      if (typeof x === "number") return x;
+      return x.replace(/[^0-9.,]/g, "");
     },
   },
 };

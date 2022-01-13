@@ -40,7 +40,7 @@ export default {
   },
   data() {
     return {
-      checkedItems: this.items,
+      checkedItems: [...this.items],
       textFilter: "",
     };
   },

@@ -9,8 +9,8 @@
     />
     <RangeSelector
       propertyName="price"
-      title="Цена"
-      :items="this.items"
+      title="Цена"      
+      :items="items"
       @range-change="onRangeSelectionChange"
     />
     <RadioListSelector
@@ -40,6 +40,7 @@ export default {
   },
   // как лучше называть обработчики событий?
   methods: {
+    // FIXME: Можно объединить в одно событие
     onCategorySelectionChange(checkedItems) {
       this.$emit("category-change", checkedItems);
     },
@@ -73,8 +74,6 @@ export default {
         return x;
       });
     },
-    // "Не важно" должно появляться не тут (может быть другой язык)
-    // Как лучше сделать?..
     discountOptions() {
       const options = this.filterUniqueOptions(
         this.items,
@@ -82,8 +81,7 @@ export default {
         true,
         true
       );
-      options.push({ option: "Не важно" });
-      options[options.length - 1].id = options.length - 1;
+      options.push({ option: "Не важно", id:options.length });
       return options;
     },
   },

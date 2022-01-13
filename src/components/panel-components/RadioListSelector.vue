@@ -40,9 +40,6 @@ export default {
       this.$emit("selection-change", selectedItem);
     },
   },
-  mounted() {
-    // this.$emit("selection-change", this.selectedItem);
-  },
 };
 </script>
 

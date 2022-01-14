@@ -9,7 +9,7 @@
     />
     <RangeSelector
       propertyName="price"
-      title="Цена"      
+      title="Цена"
       :items="items"
       @range-change="onRangeSelectionChange"
     />
@@ -38,20 +38,39 @@ export default {
       required: true,
     },
   },
-  // как лучше называть обработчики событий?
+  data() {
+    return {
+      query: {
+        selectedCategories: [],
+        selectedDiscount: 0,
+        selectedPriceRange: { min: undefined, max: undefined },
+      },
+    };
+  },
   methods: {
-    // FIXME: Можно объединить в одно событие
     onCategorySelectionChange(checkedItems) {
-      this.$emit("category-change", checkedItems);
+      const nonEmptySelection = checkedItems.reduce((acc, cur) => {
+        return acc || cur.checked;
+      }, false);
+
+      if (nonEmptySelection)
+        checkedItems = checkedItems.filter((x) => x.checked);
+
+      this.query.selectedCategories = checkedItems.map((x) => x.option);
+
+      this.$emit("query-change", this.query);
     },
     onDiscountSelectionChange(selectedItem) {
-      if (selectedItem == "Не важно")
-        selectedItem = undefined;
-      this.$emit("discount-change", selectedItem);
+      this.query.selectedDiscount = selectedItem;
+
+      this.$emit("query-change", this.query);
     },
-    onRangeSelectionChange(lval, rval) {
-      this.$emit("price-range-change", lval, rval);
+    onRangeSelectionChange(min, max) {
+      this.query.selectedPriceRange = { min, max };
+
+      this.$emit("query-change", this.query);
     },
+
     filterUniqueOptions(arr, propertyName, shouldSort, reverseSort) {
       const options = arr.map((x) => x[propertyName]);
       let uniqueOptions = Array.from(new Set(options));
@@ -75,14 +94,12 @@ export default {
       });
     },
     discountOptions() {
-      const options = this.filterUniqueOptions(
+      return this.filterUniqueOptions(
         this.items,
         "discount",
         true,
         true
       );
-      options.push({ option: "Не важно", id:options.length });
-      return options;
     },
   },
 };

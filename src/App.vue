@@ -4,9 +4,7 @@
       <FilterPanel
         class="filter-panel"
         :items="fetchedItems"
-        @category-change="onCategorySelectionChange"
-        @discount-change="onDiscountSelectionChange"
-        @price-range-change="onPriceRangeSelectionChange"
+        @query-change="onQueryChange"
       />
       <ItemList class="item-list" :items="items" />
     </div>
@@ -25,7 +23,7 @@ export default {
       isFetching: true,
       query: {
         selectedCategories: [],
-        selectedDiscount: undefined,
+        selectedDiscount: 0,
         selectedPriceRange: { min: undefined, max: undefined },
       },
     };
@@ -51,50 +49,30 @@ export default {
       });
   },
   methods: {
+    // случайное число от min до (max+1)
     randomInteger(min, max) {
-      // случайное число от min до (max+1)
       let rand = min + Math.random() * (max + 1 - min);
       return Math.floor(rand);
     },
-    onCategorySelectionChange(checkedItems) {
-      const nonEmptySelection = checkedItems.reduce((acc, cur) => {
-        return acc || cur.checked;
-      }, false);
 
-      if (nonEmptySelection)
-        checkedItems = checkedItems.filter((x) => x.checked);
-
-      this.query.selectedCategories = checkedItems.map((x) => x.option);
-    },
-    onDiscountSelectionChange(selectedItem) {
-      this.query.selectedDiscount = selectedItem;
-    },
-    onPriceRangeSelectionChange(lval, rval) {
-      this.query.selectedPriceRange.min = lval;
-      this.query.selectedPriceRange.max = rval;
-    },
+    onQueryChange(query) {
+      this.query = query;
+    }
   },
   computed: {
     items() {
-      let result = this.fetchedItems
+      return this.fetchedItems
         .filter((x) => this.query.selectedCategories.includes(x.category))
         .filter(
           (x) =>
             x.price <= this.query.selectedPriceRange.max &&
             x.price >= this.query.selectedPriceRange.min
-        );
-
-      if (
-        this.query.selectedDiscount !== undefined &&
-        Object.keys(this.query.selectedDiscount)
-      )
-        result = result.filter(
+        )
+        .filter(
           (x) =>
-            x.discount == this.query.selectedDiscount ||
-            this.query.selectedDiscount !== undefined
+            this.query.selectedDiscount == 0 ||
+            x.discount == this.query.selectedDiscount
         );
-
-      return result;
     },
   },
 };

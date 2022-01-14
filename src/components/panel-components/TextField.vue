@@ -44,6 +44,4 @@ button
   background: none
   border: none
   position: absolute
-  // top: 0
-  // display: flex
 </style>

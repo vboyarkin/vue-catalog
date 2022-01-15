@@ -35,9 +35,6 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-$color-active: #e31235
-$color-inactive: #8e8e93
-
 .item-card
   display: flex
   flex-direction: column

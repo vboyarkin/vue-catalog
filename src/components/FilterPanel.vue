@@ -5,7 +5,7 @@
       title="Категория"
       :items="categoryOptions"
       @selection-change="onCategorySelectionChange"
-      addTextField="true"
+      :addTextField="true"
     />
     <RangeSelector
       propertyName="price"
@@ -94,12 +94,7 @@ export default {
       });
     },
     discountOptions() {
-      return this.filterUniqueOptions(
-        this.items,
-        "discount",
-        true,
-        true
-      );
+      return this.filterUniqueOptions(this.items, "discount", true, true);
     },
   },
 };

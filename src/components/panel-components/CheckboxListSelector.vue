@@ -40,8 +40,8 @@ export default {
   },
   data() {
     return {
-      checkedItems: [...this.items],
       textFilter: "",
+      checkedItems: [...this.items],
     };
   },
   computed: {
@@ -55,8 +55,15 @@ export default {
     checkedItems: {
       deep: true,
       immediate: true,
+      handler: function (checkedItems) {
+        this.$emit("selection-change", checkedItems);
+      },
+    },
+    items: {
+      deep: true,
+      immediate: true,
       handler: function (items) {
-        this.$emit("selection-change", items);
+        this.checkedItems = [...items];
       },
     },
   },

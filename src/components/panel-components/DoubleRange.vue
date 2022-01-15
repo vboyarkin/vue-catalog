@@ -106,8 +106,6 @@ export default {
 <style lang="sass" scoped>
 $thumb-diameter: 1em
 $color-thumb-bg: white
-$color-active: #e83e5a
-$color-inactive: #e7e7e9
 $input-color: #000
 $input-text-width: 6em
 

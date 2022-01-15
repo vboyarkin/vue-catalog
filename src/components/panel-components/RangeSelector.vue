@@ -1,7 +1,7 @@
 <template>
   <div class="range-contaier">
     <h4>{{ title }}</h4>
-    <doubleRange
+    <DoubleRange
       @range-change="onRangeChange"
       :minValue="limits.minVal"
       :maxValue="limits.maxVal"
@@ -29,6 +29,9 @@ export default {
   },
   computed: {
     limits() {
+      if (!this.items || this.items.length === 0)
+        return { minVal: 0, maxVal: 100 };
+
       const prices = this.items.map((item) => item.price);
       const minVal = Math.min(...prices);
       const maxVal = Math.max(...prices);
@@ -45,9 +48,9 @@ export default {
     },
   },
   // raise an event to tell FilterPanel initial min and max values
-  mounted(){
+  mounted() {
     this.onRangeChange(this.limits.minVal, this.limits.maxVal);
-  }
+  },
 };
 </script>
 

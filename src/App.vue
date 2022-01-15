@@ -1,12 +1,22 @@
 <template>
   <div id="app">
-    <div class="container" v-if="!isFetching">
+    <div class="container">
       <FilterPanel
         class="filter-panel"
         :items="fetchedItems"
         @query-change="onQueryChange"
       />
-      <ItemList class="item-list" :items="items" />
+      <ItemList
+        v-if="!isFetching && items && items.length !== 0"
+        class="item-list"
+        :items="items"
+      />
+      <div
+        v-if="!(!isFetching && items && items.length !== 0)"
+        class="item-list-placeholder"
+      >
+        <span>Нет подходящих товаров</span>
+      </div>
     </div>
   </div>
 </template>
@@ -35,16 +45,14 @@ export default {
   mounted() {
     fetch("https://fakestoreapi.com/products/")
       .then((res) => res.json())
-      .then((json) => {
-        this.fetchedItems = json;
-      })
       // generate fake discount
-      .then(() => {
+      .then((json) => {
         const discounts = [0, 10, 30, 50, 60];
-        this.fetchedItems.forEach((item) => {
+        json.forEach((item) => {
           const discount_i = this.randomInteger(0, discounts.length - 1);
           item.discount = discounts[discount_i];
         });
+        this.fetchedItems = json;
         this.isFetching = false;
       });
   },
@@ -56,8 +64,8 @@ export default {
     },
 
     onQueryChange(query) {
-      this.query = query;
-    }
+      setTimeout(() => (this.query = query), 1000);
+    },
   },
   computed: {
     items() {
@@ -80,7 +88,7 @@ export default {
 
 <style lang="sass">
 body
-  font-family: Roboto, Avenir, Helvetica, Arial, sans-serif
+  font-family: $main-font
 </style>
 
 <style lang="sass" scoped>
@@ -94,4 +102,14 @@ body
 
 .item-list
   grid-column: 2
+
+.item-list-placeholder
+  grid-column: 2
+  display: flex
+  justify-content: center
+  align-items: center
+
+  span
+    font-size: 2.5rem
+    color: $color-active
 </style>

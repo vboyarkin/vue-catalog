@@ -28,8 +28,6 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-$color-inactive: #e7e7e9
-
 input
   border: solid 1px $color-inactive
   border-radius: 4px

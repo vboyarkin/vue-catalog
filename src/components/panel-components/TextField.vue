@@ -1,7 +1,7 @@
 <template>
   <div>
     <input type="text" :placeholder="placeholder" v-model="value" />
-    <button>&#x2715;</button>
+    <button v-on:click="onClick">&#x2715;</button>
   </div>
 </template>
 
@@ -24,10 +24,18 @@ export default {
       this.$emit("value-change", newval);
     },
   },
+  methods: {
+    onClick() {
+      this.value = "";
+    },
+  },
 };
 </script>
 
 <style lang="sass" scoped>
+div
+  position: relative
+
 input
   border: solid 1px $color-inactive
   border-radius: 4px
@@ -42,4 +50,10 @@ button
   background: none
   border: none
   position: absolute
+  right: 3px
+  top: 25%
+  cursor: pointer
+  color: $color-inactive
+  &:hover
+    color: $color-active
 </style>

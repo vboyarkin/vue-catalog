@@ -6,17 +6,7 @@
         :items="fetchedItems"
         @query-change="onQueryChange"
       />
-      <ItemList
-        v-if="!isFetching && items && items.length !== 0"
-        class="item-list"
-        :items="items"
-      />
-      <div
-        v-if="!(!isFetching && items && items.length !== 0)"
-        class="item-list-placeholder"
-      >
-        <span>Нет подходящих товаров</span>
-      </div>
+      <ItemList class="item-list" :items="items" :isFetching="isFetching" />
     </div>
   </div>
 </template>
@@ -34,7 +24,7 @@ export default {
       query: {
         selectedCategories: [],
         selectedDiscount: 0,
-        selectedPriceRange: { min: undefined, max: undefined },
+        selectedPriceRange: { min: null, max: null },
       },
     };
   },
@@ -57,14 +47,19 @@ export default {
       });
   },
   methods: {
-    // случайное число от min до (max+1)
+    // random integer in range [min, max+1]
     randomInteger(min, max) {
       let rand = min + Math.random() * (max + 1 - min);
       return Math.floor(rand);
     },
 
+    // add some delay before showing new query's result
     onQueryChange(query) {
-      setTimeout(() => (this.query = query), 1000);
+      this.isFetching = true;
+      setTimeout(() => {
+        this.query = JSON.parse(JSON.stringify(query));
+        this.isFetching = false;
+      }, 700);
     },
   },
   computed: {
@@ -102,14 +97,4 @@ body
 
 .item-list
   grid-column: 2
-
-.item-list-placeholder
-  grid-column: 2
-  display: flex
-  justify-content: center
-  align-items: center
-
-  span
-    font-size: 2.5rem
-    color: $color-active
 </style>

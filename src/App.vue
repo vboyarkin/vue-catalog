@@ -56,8 +56,10 @@ export default {
     // add some delay before showing new query's result
     onQueryChange(query) {
       this.isFetching = true;
+
       setTimeout(() => {
-        this.query = JSON.parse(JSON.stringify(query));
+        for (const key in query) this.query[key] = query[key];
+
         this.isFetching = false;
       }, 700);
     },

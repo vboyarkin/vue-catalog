@@ -38,15 +38,6 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      query: {
-        selectedCategories: [],
-        selectedDiscount: 0,
-        selectedPriceRange: { min: undefined, max: undefined },
-      },
-    };
-  },
   methods: {
     onCategorySelectionChange(checkedItems) {
       const nonEmptySelection = checkedItems.reduce((acc, cur) => {
@@ -56,19 +47,13 @@ export default {
       if (nonEmptySelection)
         checkedItems = checkedItems.filter((x) => x.checked);
 
-      this.query.selectedCategories = checkedItems.map((x) => x.option);
-
-      this.$emit("query-change", this.query);
+      this.$emit("query-change", { selectedCategories:  checkedItems.map((x) => x.option) });
     },
     onDiscountSelectionChange(selectedItem) {
-      this.query.selectedDiscount = selectedItem;
-
-      this.$emit("query-change", this.query);
+      this.$emit("query-change", { selectedDiscount: selectedItem });
     },
     onRangeSelectionChange(min, max) {
-      this.query.selectedPriceRange = { min, max };
-
-      this.$emit("query-change", this.query);
+      this.$emit("query-change", { selectedPriceRange: { min, max } });
     },
 
     filterUniqueOptions(arr, propertyName, shouldSort, reverseSort) {

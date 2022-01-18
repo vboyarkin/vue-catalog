@@ -47,7 +47,6 @@ export default {
       this.$emit("range-change", ...args);
     },
   },
-  // raise an event to tell FilterPanel initial min and max values
   mounted() {
     this.onRangeChange(this.limits.minVal, this.limits.maxVal);
   },

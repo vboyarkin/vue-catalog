@@ -56,7 +56,19 @@ export default {
       deep: true,
       immediate: true,
       handler: function (checkedItems) {
-        this.$emit("selection-change", checkedItems);
+        let foundChecked = false;
+
+        let filteredOptions = checkedItems.map((x) => {
+          if (x.checked) {
+            foundChecked = true;
+            return x.option;
+          }
+        });
+
+        if (!foundChecked)
+          filteredOptions = checkedItems.map((x) => x.option);
+
+        this.$emit("selection-change", filteredOptions);
       },
     },
     items: {

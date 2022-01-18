@@ -35,7 +35,6 @@ export default {
   mounted() {
     fetch("https://fakestoreapi.com/products/")
       .then((res) => res.json())
-      // generate fake discount
       .then((json) => {
         const discounts = [0, 10, 30, 50, 60];
         json.forEach((item) => {
@@ -47,13 +46,11 @@ export default {
       });
   },
   methods: {
-    // random integer in range [min, max+1]
     randomInteger(min, max) {
       let rand = min + Math.random() * (max + 1 - min);
       return Math.floor(rand);
     },
 
-    // add some delay before showing new query's result
     onQueryChange(query) {
       this.isFetching = true;
 

@@ -40,14 +40,7 @@ export default {
   },
   methods: {
     onCategorySelectionChange(checkedItems) {
-      const nonEmptySelection = checkedItems.reduce((acc, cur) => {
-        return acc || cur.checked;
-      }, false);
-
-      if (nonEmptySelection)
-        checkedItems = checkedItems.filter((x) => x.checked);
-
-      this.$emit("query-change", { selectedCategories:  checkedItems.map((x) => x.option) });
+      this.$emit("query-change", { selectedCategories:  checkedItems });
     },
     onDiscountSelectionChange(selectedItem) {
       this.$emit("query-change", { selectedDiscount: selectedItem });

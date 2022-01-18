@@ -1,9 +1,9 @@
 <template>
   <div class="wrap">
     <div class="text-container">
-      <input type="text" :placeholder="minValue" v-model="leftValue" />
+      <input type="number" :placeholder="minValue" v-model="leftValue" />
       <span class="dash">—</span>
-      <input type="text" :placeholder="maxValue" v-model="rightValue" />
+      <input type="number" :placeholder="maxValue" v-model="rightValue" />
     </div>
 
     <div class="flex-container">
@@ -65,9 +65,7 @@ export default {
       this.rightValue = val;
     },
     leftValue() {
-      this.leftValue = this.filterDigits(this.leftValue);
       this.leftValue = Number(this.leftValue);
-      this.rightValue = Number(this.rightValue);
 
       if (this.leftValue > this.rightValue) {
         const t = this.leftValue;
@@ -78,8 +76,6 @@ export default {
       this.$emit("range-change", this.leftValue, this.rightValue);
     },
     rightValue() {
-      this.rightValue = this.filterDigits(this.rightValue);
-      this.leftValue = Number(this.leftValue);
       this.rightValue = Number(this.rightValue);
 
       if (this.rightValue < this.leftValue) {
@@ -89,15 +85,6 @@ export default {
       }
 
       this.$emit("range-change", this.leftValue, this.rightValue);
-    },
-  },
-  methods: {
-    /**
-     * Returns string exluding all chars that aren't digits, commas, dots
-     */
-    filterDigits(x) {
-      if (typeof x === "number") return x;
-      return x.replace(/[^0-9.,]/g, "");
     },
   },
 };
@@ -164,12 +151,20 @@ input[type="range"]
   &::-moz-range-thumb
     @include thumb
 
-input[type="text"]
+input[type="number"]
   border: solid 1px $color-inactive
   border-radius: 4px
   padding: 1rem 1.2rem
   font-size: inherit
   width: 1px
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button
+  -webkit-appearance: none
+  margin: 0
+
+input[type=number]
+  -moz-appearance: textfield
 
 .text-container
   display: flex

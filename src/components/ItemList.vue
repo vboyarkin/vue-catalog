@@ -65,10 +65,10 @@ export default {
 
 @keyframes pulse
   from
-    opacity: 100%
+    opacity: 1
   to
-    opacity: 1000%
+    opacity: 1
 
   50%
-    opacity: 25%
+    opacity: .25
 </style>
